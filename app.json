@@ -1,0 +1,64 @@
+{
+  "name": "MATRIX-AI",
+  "description": "A COOL Whatsapp bot based on Baileysjs with Multi-Device support.",
+  "keywords": ["whatsapp bot"],
+  "logo":"https://telegra.ph/file/054986c17ed343e74ca6b.jpg",
+  "repository": "https://github.com/MATRIXCODER-0101/MATRIX-AI",
+  "stack": "container",
+  "env": {
+    "AUTO_READ": {
+      "description": "Enable auto read feature",
+      "required": false,
+      "value": ""
+    },
+    "ALWAYS_ONLINE": {
+  "description": "Enable always online feature",
+  "required": false,
+  "value": ""
+},
+"AUTO_TYPING": {
+  "description": "Enable auto typing feature",
+  "required": false,
+  "value": ""
+},
+    "MONGO_DB": {
+      "description": "your mongodb database url",
+      "required": true,
+      "value": ""
+    },
+    "TYPEMENU": {
+  "description": "choose menu type from v1 to v5",
+  "required": false,
+  "value": "v1"
+},
+"ONLYGROUP": {
+  "description": "true for bot work in only group otherwise false",
+  "required": false,
+  "value": "false"
+},
+"ONLYPC": {
+  "description": "true for bot work in only private chat otherwise false",
+  "required": false,
+  "value": "false"
+},
+"AUTO_BLOCK_ENABLED": {
+  "description": "Enable auto block feature for +212",
+  "required": false,
+  "value": "true"
+}
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    },
+    {
+      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
+    }
+  ]
+} 
