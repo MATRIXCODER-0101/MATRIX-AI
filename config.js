@@ -26,7 +26,7 @@ global.ownername = '𝑆𝛪𝐷 𝐵𝛨𝛥𝛪';
 global.owner = ['254105677636'];
 global.premium = ['254105677636'];
 global.packname = '𝚜𝚝𝚒𝚌𝚔𝚎𝚛 𝚋𝚢';
-global.author = '𝐆𝐒𝐒 𝚩𝚯𝚻𝐖𝚫';
+global.author = '𝚳𝚫𝚻𝚪𝚰𝚾-𝚫𝚰';
 global.sessionName = 'session';
 global.prefa = ['!', '.'];
 global.sp = '✪';
@@ -43,8 +43,8 @@ global.mess = {
     wait: '*Processing Your request*',
     endLimit: '`Your daily limit has expired, the limit will be reset every 12 hours`',
 };
-global.link = 'https://whatsapp.com/channel/0029VaWJMi3GehEE9e1YsI1S'
-global.linkGroup = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
+global.link = 'https://whatsapp.com/channel/0029VaRnPPRLCoWu2kOXk53a'
+global.linkGroup = 'https://chat.whatsapp.com/GD6femiiY2GD0fZYvnXkBv'
 global.autoswview = process.env.AUTO_STATUS_SEEN || "true",
 global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
