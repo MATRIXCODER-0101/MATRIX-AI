@@ -121,10 +121,6 @@
 
 
 
-## ` Scan with WhatsApp`
-<h2 align="left">  <a href="https://replit.com/@MatrixCorder/Qr-scanner-MATRIX-AI?v=1"><img src="https://play-lh.googleusercontent.com/901aMQFFnVoX2T-YuJmTIwpPve_SUgMv_QSyzMSPtAqt_l0CyXN1DxfD6xXU0r2f9iM=w240-h480-rw" width="90" />
-</a>
-</h2>
 
 ## 
 
@@ -153,18 +149,6 @@
 <p align="left"><a href="https://t.me/i_am_matrix_ai"><img tittle="MATRIX-AI OFFICIAL CHANNEL" src="https://i.ibb.co/Kj3Knpk/TG-SUPPORT-REPO-LOW-NIMA.png" alt="TG-SUPPORT-REPO-LOW-NIMA" border="2" width="96.35" height="28" ></a></p>
 <P align="left"><a href="https://t.me/minister_of_fine_ass"><img src="https://img.shields.io/badge/Telegram-0088cc?style=for-the-badge&logo=telegram&logoColor=white" /><br>
 
-
-## ```Connect With Me```<img src="https://github.com/0xAbdulKhalid/0xAbdulKhalid/raw/main/assets/mdImages/handshake.gif" width ="80"></h1> 
- <br> 
-<p align="center">
-<a href="https://wa.me/2349066528353"><img src="https://img.shields.io/badge/Contact David-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-<a href="https://whatsapp.com/channel/0029VaZsyQ21XqudOTjyG30Z"><img src="https://img.shields.io/badge/Join Official Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-<a href="https://t.me/deecee_x"><img src="https://img.shields.io/badge/Telegram-0088cc?style=for-the-badge&logo=telegram&logoColor=white" /><br>
-<p align="center">
-<img alt="Development" width="250" src="https://media2.giphy.com/media/W9tBvzTXkQopi/giphy.gif?cid=6c09b952xu6syi1fyqfyc04wcfk0qvqe8fd7sop136zxfjyn&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g" /> </p>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a><a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-# 
-<br>
 
 
 ## ` BUILDPACKS`
