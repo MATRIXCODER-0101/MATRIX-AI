@@ -151,7 +151,7 @@
 </p>
 <p align="left"><a href="https://whatsapp.com/channel/0029VaRnPPRLCoWu2kOXk53a"><img title="MATRIX-AI OFFICIAL CHANNEL" src="https://img.shields.io/badge/WHATSAPP CHANNEL-h?color=black&style=for-the-badge&logo=whatsapp" width="96.35" height="28"></a></p>
 <p align="left"><a href="https://t.me/i_am_matrix_ai"><img tittle="MATRIX-AI OFFICIAL CHANNEL" src="https://i.ibb.co/Kj3Knpk/TG-SUPPORT-REPO-LOW-NIMA.png" alt="TG-SUPPORT-REPO-LOW-NIMA" border="2" width="96.35" height="28" ></a></p>
-
+<P align="left"><a href="https://t.me/minister_of_fine_ass"><img src="https://img.shields.io/badge/Telegram-0088cc?style=for-the-badge&logo=telegram&logoColor=white" /><br>
 
 
 ## ```Connect With Me```<img src="https://github.com/0xAbdulKhalid/0xAbdulKhalid/raw/main/assets/mdImages/handshake.gif" width ="80"></h1> 
