@@ -1,7 +1,7 @@
 
-require('./config')
-const config = require('./config.js');
-const { default: gssConnect, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto, getAggregateVotesInPollMessage } = require("@whiskeysockets/baileys")
+'./config')
+require(const config = require('./config.js');
+const { default: matrixConnect, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto, getAggregateVotesInPollMessage } = require("@whiskeysockets/baileys")
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -63,10 +63,10 @@ if (global.db) setInterval(async () => {
     if (global.db.data) await global.db.write()
   }, 30 * 1000)
 
-async function startgss() {
+async function startmatrix() {
     const { state, saveCreds } = await useMultiFileAuthState(`./${sessionName}`)
 
-    const gss = gssConnect({
+    const matrix = matrixConnect({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: true,
         browser: ['MATRIX-AI Multi Device','Safari','1.0.0'],
@@ -82,22 +82,22 @@ async function startgss() {
         }
     })
 
-    store.bind(gss.ev)
+    store.bind(matrix.ev)
     
 
 
-   gss.ev.on('messages.upsert', async chatUpdate => {
+   matrix.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
         mek = chatUpdate.messages[0]
         if (!mek.message) return
         mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
         if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+        if (!matrix.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
         if (mek.key.id.startsWith('FatihArridho_')) return
-        m = smsg(gss, mek, store)
-        require("./gss")(gss, m, chatUpdate, store)
+        m = smsg(matrix, mek, store)
+        require("./matrix")(matrix, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
@@ -128,13 +128,13 @@ async function handleDeletedMessage(message) {
 
         // Check if it's an image
         if (msg.imageMessage) {
-            mediaUrl = await gss.downloadAndSaveMediaMessage(msg.imageMessage);
+            mediaUrl = await matrix.downloadAndSaveMediaMessage(msg.imageMessage);
             caption = msg.imageMessage.caption || caption; // Use image caption if available
         }
 
         // Check if it's a video
         if (msg.videoMessage) {
-            mediaUrl = await gss.downloadAndSaveMediaMessage(msg.videoMessage);
+            mediaUrl = await matrix.downloadAndSaveMediaMessage(msg.videoMessage);
             caption = msg.videoMessage.caption || caption; // Use video caption if available
         }
 
@@ -145,7 +145,7 @@ async function handleDeletedMessage(message) {
         └─────────────
         `.trim();
 
-        await gss.sendMessage(gss.user.id, {
+        await matrix.sendMessage(matrix.user.id, {
             text: deletedMessageNotification,
             media: { url: mediaUrl, caption: caption }
         });
@@ -169,7 +169,7 @@ async function deleteUpdate(message) {
             return
         let chats = global.db.data.chats[msg.chats] || {}
        
-            await this.reply(gss.user.id, `
+            await this.reply(matrix.user.id, `
             ≡ deleted a message 
             ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
             ▢ *Number :* @${participant.split`@`[0]} 
@@ -177,7 +177,7 @@ async function deleteUpdate(message) {
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+        this.copyNForward(.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
@@ -186,11 +186,11 @@ async function deleteUpdate(message) {
 
 
     //autostatus view
-        gss.ev.on('messages.upsert', async chatUpdate => {
+        matrix.ev.on('messages.upsert', async chatUpdate => {
         	if (global.antiswview){
             mek = chatUpdate.messages[0]
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-            	await gss.readMessages([mek.key]) }
+            	await matrix.readMessages([mek.key]) }
             }
     })
     
@@ -205,7 +205,7 @@ async function getMessage(key) {
     };
 }
 
-gss.ev.on('messages.update', async chatUpdate => {
+matrix.ev.on('messages.update', async chatUpdate => {
     for (const { key, update } of chatUpdate) {
         if (update.pollUpdates && key.fromMe) {
             const pollCreation = await getMessage(key);
@@ -220,13 +220,13 @@ gss.ev.on('messages.update', async chatUpdate => {
 
                 try {
                     setTimeout(async () => {
-                        await gss.sendMessage(key.remoteJid, { delete: key });
+                        await matrix.sendMessage(key.remoteJid, { delete: key });
                     }, 10000);
                 } catch (error) {
                     console.error("Error deleting message:", error);
                 }
 
-                gss.appenTextMessage(prefCmd, chatUpdate);
+                matrix.appenTextMessage(prefCmd, chatUpdate);
             }
         }
     }
@@ -237,7 +237,7 @@ gss.ev.on('messages.update', async chatUpdate => {
 	
 	
     // Setting
-    gss.decodeJid = (jid) => {
+    matrix.decodeJid = (jid) => {
         if (!jid) return jid
         if (/:\d+@/gi.test(jid)) {
             let decode = jidDecode(jid) || {}
@@ -245,47 +245,47 @@ gss.ev.on('messages.update', async chatUpdate => {
         } else return jid
     }
     
-    gss.ev.on('contacts.update', update => {
+    matrix.ev.on('contacts.update', update => {
         for (let contact of update) {
-            let id = gss.decodeJid(contact.id)
+            let id = matrix.decodeJid(contact.id)
             if (store && store.contacts) store.contacts[id] = { id, name: contact.notify }
         }
     })
 
-    gss.getName = (jid, withoutContact  = false) => {
-        id = gss.decodeJid(jid)
-        withoutContact = gss.withoutContact || withoutContact 
+    matrix.getName = (jid, withoutContact  = false) => {
+        id = matrix.decodeJid(jid)
+        withoutContact = matrix.withoutContact || withoutContact 
         let v
         if (id.endsWith("@g.us")) return new Promise(async (resolve) => {
             v = store.contacts[id] || {}
-            if (!(v.name || v.subject)) v = gss.groupMetadata(id) || {}
+            if (!(v.name || v.subject)) v = matrix.groupMetadata(id) || {}
             resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
         })
         else v = id === '0@s.whatsapp.net' ? {
             id,
             name: 'WhatsApp'
-        } : id === gss.decodeJid(gss.user.id) ?
-            gss.user :
+        } : id === matrix.decodeJid(matrix.user.id) ?
+            matrix.user :
             (store.contacts[id] || {})
             return (withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international')
     }
     
-    gss.sendContact = async (jid, kon, quoted = '', opts = {}) => {
+    matrix.sendContact = async (jid, kon, quoted = '', opts = {}) => {
 	let list = []
 	for (let i of kon) {
 	    list.push({
-	    	displayName: await gss.getName(i + '@s.whatsapp.net'),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await gss.getName(i + '@s.whatsapp.net')}\nFN:${await gss.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Phone\nEND:VCARD`
+	    	displayName: await matrix.getName(i + '@s.whatsapp.net'),
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await matrix.getName(i + '@s.whatsapp.net')}\nFN:${await matrix.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Phone\nEND:VCARD`
 	    })
 	}
-	gss.sendMessage(jid, { contacts: { displayName: `${list.length} Kontak`, contacts: list }, ...opts }, { quoted })
+	matrix.sendMessage(jid, { contacts: { displayName: `${list.length} Kontak`, contacts: list }, ...opts }, { quoted })
     }
     
-    gss.public = true
+    mtrix.public = true
 
-    gss.serializeM = (m) => smsg(gss, m, store)
+    matrix.serializeM = (m) => smsg(matrix, m, store)
 
-    gss.ev.on('connection.update', async (update) => {
+    matrix.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect } = update;
 
     if (connection === 'close') {
@@ -293,42 +293,42 @@ gss.ev.on('messages.update', async chatUpdate => {
 
         if (reason === DisconnectReason.badSession) {
             console.log(`Bad Session File, Please Delete Session and Scan Again`);
-            gss.logout();
+            matrix.logout();
         } else if (reason === DisconnectReason.connectionClosed) {
             console.log("Connection closed, reconnecting....");
-            startgss();
+            startmatrix();
         } else if (reason === DisconnectReason.connectionLost) {
             console.log("Connection Lost from Server, reconnecting...");
-            startgss();
+            startmatrix();
         } else if (reason === DisconnectReason.connectionReplaced) {
             console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
-            gss.logout();
+            matrix.logout();
         } else if (reason === DisconnectReason.loggedOut) {
             console.log(`Device Logged Out, Please Scan Again And Run.`);
-            gss.logout();
+            matrix.logout();
         } else if (reason === DisconnectReason.restartRequired) {
             console.log("Restart Required, Restarting...");
-            startgss();
+            startmatrix();
         } else if (reason === DisconnectReason.timedOut) {
             console.log("Connection TimedOut, Reconnecting...");
-            startgss();
+            startmatrix();
         } else if (reason === DisconnectReason.Multidevicemismatch) {
             console.log("Multi device mismatch, please scan again");
-            gss.logout();
+            matrix.logout();
         } else {
-            gss.end(`Unknown DisconnectReason: ${reason}|${connection}`);
+            matrix.end(`Unknown DisconnectReason: ${reason}|${connection}`);
         }
     } else if (connection === "open") {
         // Add your custom message when the connection is open
         console.log('Connected...', update);
-        gss.sendMessage('254105677636@s.whatsapp.net', {
+        matrix.sendMessage('254105677636@s.whatsapp.net', {
             text: `*hi bro! 🫡*\n_MATRIX-AI  bot has successfully connected to the server_`
         });
     }
 });
 
 
-    gss.ev.on('creds.update', saveCreds)
+    matrix.ev.on('creds.update', saveCreds)
 
     // Add Other
       
@@ -339,7 +339,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} values 
      * @returns 
      */
-    gss.sendPoll = (jid, name = '', values = [], selectableCount = 1) => { return gss.sendMessage(jid, { poll: { name, values, selectableCount }}) }
+    matrix.sendPoll = (jid, name = '', values = [], selectableCount = 1) => { return matrix.sendMessage(jid, { poll: { name, values, selectableCount }}) }
 
       /**
       *
@@ -349,25 +349,25 @@ gss.ev.on('messages.update', async chatUpdate => {
       * @param {*} quoted
       * @param {*} options
       */
-     gss.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
+     matrix.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
       let mime = '';
       let res = await axios.head(url)
       mime = res.headers['content-type']
       if (mime.split("/")[1] === "gif") {
-     return gss.sendMessage(jid, { video: await getBuffer(url), caption: caption, gifPlayback: true, ...options}, { quoted: quoted, ...options})
+     return matrix.sendMessage(jid, { video: await getBuffer(url), caption: caption, gifPlayback: true, ...options}, { quoted: quoted, ...options})
       }
       let type = mime.split("/")[0]+"Message"
       if(mime === "application/pdf"){
-     return gss.sendMessage(jid, { document: await getBuffer(url), mimetype: 'application/pdf', caption: caption, ...options}, { quoted: quoted, ...options })
+     return matrix.sendMessage(jid, { document: await getBuffer(url), mimetype: 'application/pdf', caption: caption, ...options}, { quoted: quoted, ...options })
       }
       if(mime.split("/")[0] === "image"){
-     return gss.sendMessage(jid, { image: await getBuffer(url), caption: caption, ...options}, { quoted: quoted, ...options})
+     return matrix.sendMessage(jid, { image: await getBuffer(url), caption: caption, ...options}, { quoted: quoted, ...options})
       }
       if(mime.split("/")[0] === "video"){
-     return gss.sendMessage(jid, { video: await getBuffer(url), caption: caption, mimetype: 'video/mp4', ...options}, { quoted: quoted, ...options })
+     return matrix.sendMessage(jid, { video: await getBuffer(url), caption: caption, mimetype: 'video/mp4', ...options}, { quoted: quoted, ...options })
       }
       if(mime.split("/")[0] === "audio"){
-     return gss.sendMessage(jid, { audio: await getBuffer(url), caption: caption, mimetype: 'audio/mpeg', ...options}, { quoted: quoted, ...options })
+     return matrix.sendMessage(jid, { audio: await getBuffer(url), caption: caption, mimetype: 'audio/mpeg', ...options}, { quoted: quoted, ...options })
       }
       }
     
@@ -379,7 +379,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendText = (jid, text, quoted = '', options) => gss.sendMessage(jid, { text: text, ...options }, { quoted, ...options })
+    matrix.sendText = (jid, text, quoted = '', options) => matrix.sendMessage(jid, { text: text, ...options }, { quoted, ...options })
 
     /**
      * 
@@ -390,9 +390,9 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendImage = async (jid, path, caption = '', quoted = '', options) => {
+    matrix.sendImage = async (jid, path, caption = '', quoted = '', options) => {
 	let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await gss.sendMessage(jid, { image: buffer, caption: caption, ...options }, { quoted })
+        return await matrix.sendMessage(jid, { image: buffer, caption: caption, ...options }, { quoted })
     }
 
     /**
@@ -404,9 +404,9 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendVideo = async (jid, path, caption = '', quoted = '', gif = false, options) => {
+    matrix.sendVideo = async (jid, path, caption = '', quoted = '', gif = false, options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await gss.sendMessage(jid, { video: buffer, caption: caption, gifPlayback: gif, ...options }, { quoted })
+        return await matrix.sendMessage(jid, { video: buffer, caption: caption, gifPlayback: gif, ...options }, { quoted })
     }
 
     /**
@@ -418,9 +418,9 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendAudio = async (jid, path, quoted = '', ptt = false, options) => {
+    matrix.sendAudio = async (jid, path, quoted = '', ptt = false, options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await gss.sendMessage(jid, { audio: buffer, ptt: ptt, ...options }, { quoted })
+        return await matrix.sendMessage(jid, { audio: buffer, ptt: ptt, ...options }, { quoted })
     }
 
     /**
@@ -431,7 +431,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendTextWithMentions = async (jid, text, quoted, options = {}) => gss.sendMessage(jid, { text: text, mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'), ...options }, { quoted })
+    matrix.sendTextWithMentions = async (jid, text, quoted, options = {}) => matrix.sendMessage(jid, { text: text, mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'), ...options }, { quoted })
 
     /**
      * 
@@ -441,7 +441,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
+    matrix.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -450,7 +450,7 @@ gss.ev.on('messages.update', async chatUpdate => {
             buffer = await imageToWebp(buff)
         }
 
-        await gss.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+        await matrix.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
         return buffer
     }
 
@@ -462,7 +462,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
+    matrix.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -471,7 +471,7 @@ gss.ev.on('messages.update', async chatUpdate => {
             buffer = await videoToWebp(buff)
         }
 
-        await gss.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+        await matrix.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
         return buffer
     }
     
@@ -484,7 +484,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} attachExtension 
      * @returns 
      */
-    gss.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
+    matrix.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
         let quoted = message.msg ? message.msg : message
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
@@ -500,7 +500,7 @@ gss.ev.on('messages.update', async chatUpdate => {
         return trueFileName
     }
 
-    gss.downloadMediaMessage = async (message) => {
+    matrix.downloadMediaMessage = async (message) => {
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
         const stream = await downloadContentFromMessage(message, messageType)
@@ -522,8 +522,8 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.sendMedia = async (jid, path, fileName = '', caption = '', quoted = '', options = {}) => {
-        let types = await gss.getFile(path, true)
+    matrix.sendMedia = async (jid, path, fileName = '', caption = '', quoted = '', options = {}) => {
+        let types = await matrix.getFile(path, true)
            let { mime, ext, res, data, filename } = types
            if (res && res.status !== 200 || file.length <= 65536) {
                try { throw { json: JSON.parse(file.toString()) } }
@@ -543,7 +543,7 @@ gss.ev.on('messages.update', async chatUpdate => {
        else if (/video/.test(mime)) type = 'video'
        else if (/audio/.test(mime)) type = 'audio'
        else type = 'document'
-       await gss.sendMessage(jid, { [type]: { url: pathFile }, caption, mimetype, fileName, ...options }, { quoted, ...options })
+       await matrix.sendMessage(jid, { [type]: { url: pathFile }, caption, mimetype, fileName, ...options }, { quoted, ...options })
        return fs.promises.unlink(pathFile)
        }
 
@@ -555,7 +555,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} options 
      * @returns 
      */
-    gss.copyNForward = async (jid, message, forceForward = false, options = {}) => {
+    matrix.copyNForward = async (jid, message, forceForward = false, options = {}) => {
         let vtype
 		if (options.readViewOnce) {
 			message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
@@ -586,11 +586,11 @@ gss.ev.on('messages.update', async chatUpdate => {
                 }
             } : {})
         } : {})
-        await gss.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
+        await matrix.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
         return waMessage
     }
 
-    gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
+    matrix.cMod = (jid, copy, text = '', sender =matrix.user.id, options = {}) => {
         //let copy = message.toJSON()
 		let mtype = Object.keys(copy.message)[0]
 		let isEphemeral = mtype === 'ephemeralMessage'
@@ -611,7 +611,7 @@ gss.ev.on('messages.update', async chatUpdate => {
 		if (copy.key.remoteJid.includes('@s.whatsapp.net')) sender = sender || copy.key.remoteJid
 		else if (copy.key.remoteJid.includes('@broadcast')) sender = sender || copy.key.remoteJid
 		copy.key.remoteJid = jid
-		copy.key.fromMe = sender === gss.user.id
+		copy.key.fromMe = sender === matrix.user.id
 
         return proto.WebMessageInfo.fromObject(copy)
     }
@@ -621,7 +621,7 @@ gss.ev.on('messages.update', async chatUpdate => {
      * @param {*} path 
      * @returns 
      */
-    gss.getFile = async (PATH, save) => {
+    matrix.getFile = async (PATH, save) => {
         let res
         let data = Buffer.isBuffer(PATH) ? PATH : /^data:.*?\/.*?;base64,/i.test(PATH) ? Buffer.from(PATH.split`,`[1], 'base64') : /^https?:\/\//.test(PATH) ? await (res = await getBuffer(PATH)) : fs.existsSync(PATH) ? (filename = PATH, fs.readFileSync(PATH)) : typeof PATH === 'string' ? PATH : Buffer.alloc(0)
         //if (!Buffer.isBuffer(data)) throw new TypeError('Result is not a buffer')
@@ -641,7 +641,7 @@ gss.ev.on('messages.update', async chatUpdate => {
 
     }
 
-    return gss
+    return matrix
 }
 
 startgss()
