@@ -55,7 +55,7 @@
        <p align="left"><a href="https://signup.heroku.com"> <img src="https://img.shields.io/badge/heroku%20Account-purple?style=for-the-badge&logo=heroku" width="96.35" height="28"/></a></p>
 
 ### 
-<p align="left"><a href="https://heroku.com/deploy?template=https://github.com/MatrixCorder11464/MATRIX-AI">
+<p align="left"><a href="https://heroku.com/deploy?template=https://github.com/MATRIXCODER-0101/MATRIX-AI">
     <img src="https://www.herokucdn.com/deploy/button.png" width="96.35" height="28" alt="Deploy on Heroku" >
     </a></p>
  
@@ -124,12 +124,6 @@
     <a href="https://dash.boxmineworld.com/">
     <img src="https://graph.org/file/2af0e67f320986702ea24.jpg" alt="Deploy on Boxmineworld" width="96.35" height="28">
     </a></P>
-
-[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/MatrixCoder11464/MATRIX-AI&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=254105677636&env[MONGODB_URI]&&env[OWNER_NAME]=MatrixCoder&env[KOYEB_API]&env[AUTO_READ_STATUS]=false&env[ANTI_BAD_WORD]=fuck&env[ALWAYS_ONLINE]=true&env[PREFIX]=.&env[ALIVE_IMG]=https://telegra.ph/file/054986c17ed343e74ca6b.jpg&env[ALIVE_MSJ]=IAmOnline&env[AUTO_RESTART]=true&env[SUDO]=254105677636&env[READ_MESSAGE]=false&env[DISABLE_PM]=false&env[DL_SIZE]=60&env[WORK_TYPE]=public&env[THEME]=MATRIX-AI&env[PACK_INFO]=MATRIX-AI;madebymatrixcoder&name=matrix-ai&env[KOYEB_NAME]=matrix-ai&env[ANTILINK_VALUES]=chat.whatsapp.com&env[PORT]=8000)
-
-
-
-
 
 
 
