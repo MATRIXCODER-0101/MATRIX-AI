@@ -644,7 +644,7 @@ matrix.ev.on('messages.update', async chatUpdate => {
     return matrix
 }
 
-startgss()
+startmatrix()
 
 
 let file = require.resolve(__filename)
